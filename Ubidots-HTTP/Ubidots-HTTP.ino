@@ -16,20 +16,20 @@
  *******************************/
 
 //#include <ESP8266WiFi.h>
-#include <WiFi.h>
+#include <WiFi.h> 
 
 
 /********************************
  * Constants and objects
  *******************************/
-char const * SSID_NAME = "Redmi 8"; // Put here your SSID name
-char const * SSID_PASS = "elektro16"; // Put here your password
-char* TOKEN = "BBFF-UXgkw1lSuJvrLYtK3NeAF25oWp4wsi"; // Put here your TOKEN
+char const * SSID_NAME = "ssid"; // Put here your SSID name
+char const * SSID_PASS = "password"; // Put here your password
+char* TOKEN = "token"; // Put here your TOKEN
 
-char* DEVICE_LABEL = "thermometer"; // Your Device label
+char* DEVICE_LABEL = "esp32"; // Your Device label
 
 /* Put here your variable's labels*/
-char const * VARIABLE_LABEL_1 = "new-variable";
+char const * VARIABLE_LABEL_1 = "thermometer";
 
 /* HTTP Settings */
 char const * HTTPSERVER = "industrial.api.ubidots.com";
@@ -37,7 +37,7 @@ const int HTTPPORT = 80;
 char const * USER_AGENT = "ESP32";
 char const * VERSION = "1.0";
 
-WiFiClient clientUbi;
+WiFiClient clientUbi; //mendeklarasikan client
 
 /********************************
  * Auxiliar Functions
@@ -156,7 +156,7 @@ void loop() {
   char str_val_1[30];
 
   /*---- Simulates the values of the sensors -----*/
-  float sensor_value_1 = random(30, 60)*1.0;
+  float sensor_value_1 = random(30, 60)*1.0; 
 
   /*---- Transforms the values of the sensors to char type -----*/
 
@@ -171,28 +171,5 @@ void loop() {
 
   /* Calls the Ubidots Function POST */
   SendToUbidots(payload);
-
-  delay(5000);
-  char payload[200];
-  char str_val_1[30];
-
-  /*---- Simulates the values of the sensors -----*/
-  float sensor_value_1 = random(30, 60)*1.0;
-
-  /*---- Transforms the values of the sensors to char type -----*/
-
-  /* 4 is mininum width, 2 is precision; float value is copied onto str_val*/
-  dtostrf(sensor_value_1, 4, 2, str_val_1);
-
-  // Important: Avoid to send a very long char as it is very memory space costly, send small char arrays
-
-  sprintf(payload, "{\"");
-  sprintf(payload, "%s%s\":{\"value\":%s}", payload, VARIABLE_LABEL_1, str_val_1);
-  sprintf(payload, "%s}", payload);
-
-  /* Calls the Ubidots Function POST */
-  SendToUbidots(payload);
-
-  delay(5000);
 
 }
